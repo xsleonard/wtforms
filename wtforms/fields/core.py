@@ -7,7 +7,7 @@ import time
 
 from wtforms import widgets
 from wtforms.compat import text_type, izip
-from wtforms.validators import StopValidation
+from wtforms.validators import StopValidation, ValidationError
 
 
 __all__ = (
@@ -167,7 +167,7 @@ class Field(object):
             if e.args and e.args[0]:
                 self.errors.append(e.args[0])
             stop_validation = True
-        except ValidationError as e:
+        except ValueError as e:
             self.errors.append(e.args[0])
 
         # Run validators
@@ -178,7 +178,7 @@ class Field(object):
         # Call post_validate
         try:
             self.post_validate(form, stop_validation)
-        except ValidationError as e:
+        except ValueError as e:
             self.errors.append(e.args[0])
 
         return len(self.errors) == 0
@@ -198,7 +198,7 @@ class Field(object):
                 if e.args and e.args[0]:
                     self.errors.append(e.args[0])
                 return True
-            except ValueError as e:
+            except ValidationError as e:
                 self.errors.append(e.args[0])
 
         return False
