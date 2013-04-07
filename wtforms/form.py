@@ -122,7 +122,9 @@ class BaseForm(object):
         """
         self._errors = None
         success = True
-        for name, field in iteritems(self._fields):
+        # Iterate self to preserve field order on validation
+        for field in self:
+            name = field.name
             if extra_validators is not None and name in extra_validators:
                 extra = extra_validators[name]
             else:
