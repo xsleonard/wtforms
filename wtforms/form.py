@@ -25,7 +25,6 @@ class BaseForm(object):
             prefix += '-'
 
         self._prefix = prefix
-        self._errors = None
         self._fields = {}
 
         if hasattr(fields, 'iteritems'):
@@ -120,7 +119,6 @@ class BaseForm(object):
 
         Returns `True` if no errors occur.
         """
-        self._errors = None
         success = True
         # Iterate self to preserve field order on validation
         for field in self:
@@ -139,9 +137,7 @@ class BaseForm(object):
 
     @property
     def errors(self):
-        if self._errors is None:
-            self._errors = dict((name, f.errors) for name, f in iteritems(self._fields) if f.errors)
-        return self._errors
+        return dict((name, f.errors) for name, f in iteritems(self._fields) if f.errors)
 
 
 class FormMeta(type):
