@@ -167,7 +167,7 @@ class Field(object):
             if e.args and e.args[0]:
                 self.errors.append(e.args[0])
             stop_validation = True
-        except ValueError as e:
+        except ValidationError as e:
             self.errors.append(e.args[0])
 
         # Run validators
@@ -178,7 +178,7 @@ class Field(object):
         # Call post_validate
         try:
             self.post_validate(form, stop_validation)
-        except ValueError as e:
+        except ValidationError as e:
             self.errors.append(e.args[0])
 
         return len(self.errors) == 0
