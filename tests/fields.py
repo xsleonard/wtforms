@@ -12,7 +12,7 @@ from wtforms.fields import *
 from wtforms.fields import Label, Field
 from wtforms.form import Form
 from wtforms.compat import text_type
-
+from wtforms.validators import ValidationError
 
 PYTHON_VERSION = sys.version_info
 
@@ -645,9 +645,9 @@ class FieldListTest(TestCase):
     def test_validators(self):
         def validator(form, field):
             if field.data and field.data[0] == 'fail':
-                raise ValueError('fail')
+                raise ValidationError('fail')
             elif len(field.data) > 2:
-                raise ValueError('too many')
+                raise ValidationError('too many')
 
         F = make_form(a = FieldList(self.t, validators=[validator]))
 
