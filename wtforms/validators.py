@@ -162,6 +162,7 @@ class Optional(object):
 
     def __call__(self, form, field):
         if not field.raw_data or isinstance(field.raw_data[0], string_types) and not self.string_check(field.raw_data[0]):
+            field.data = None
             field.errors[:] = []
             raise StopValidation()
 
